@@ -1,6 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import authRouter from './Routes/authRoutes.js';
+import usersRouter from './Routes/usersRoutes.js';
+import videosRouter from './Routes/videosRoutes.js';
+import commentsRouter from './Routes/commentsRoutes.js';
 
 const app = express();
 
@@ -21,6 +25,29 @@ const connect = () => {
 
 // Middleware
 app.use(express.json());
+
+// auth
+app.use('/auth', authRouter)
+
+// users
+app.use('/user', usersRouter)
+
+// videos
+app.use('/videos', videosRouter)
+
+// comments
+app.use('/comment', commentsRouter)
+
+// Error handling
+app.use((err, req, res, next) => {
+    const status = err.status || 500;
+    const message = err.message || "Something went wrong";
+    return res.status(status).send({
+        success: false,
+        status,
+        message
+    })
+})
 
 app.listen(PORT, () => {
     console.log("listening to the server");
