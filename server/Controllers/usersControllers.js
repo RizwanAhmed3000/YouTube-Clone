@@ -77,11 +77,35 @@ export const getUser = async (req, res) => {
 };
 
 export const subscribeUser = async (req, res) => {
-
+    try {
+        await User.findById(req.user.id, { $push: { subscribedUsers : req.params.channelId}});
+        await User.findByIdAndUpdate(req.params.channelId, { $inc: {subscribers: 1}});
+        res.status(200).send({
+            status: "Success",
+            message: "Subscribed User",
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 };
 
 export const unsubscribeUser = async (req, res) => {
-
+    try {
+        await User.findById(req.user.id, { $pull: { subscribedUsers: req.params.channelId } });
+        await User.findByIdAndUpdate(req.params.channelId, { $inc: { subscribers: -1 } });
+        res.status(200).send({
+            status: "Success",
+            message: "unsubscribed User",
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 };
 
 export const likeVideo = async (req, res) => {

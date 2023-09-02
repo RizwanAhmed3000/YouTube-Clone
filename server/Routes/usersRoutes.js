@@ -14,10 +14,10 @@ usersRouter.delete('/:id', verifyToken, deleteUser);
 usersRouter.get('/find/:id', getUser);
 
 // sub a user
-usersRouter.put('/subscribe/:channelId', verifyToken , subscribeUser);
+usersRouter.put('/sub/:channelId', verifyToken , subscribeUser);
 
 // unsub a user
-usersRouter.put('/unsubscribe/:channelId', verifyToken , unsubscribeUser);
+usersRouter.put('/unsub/:channelId', verifyToken , unsubscribeUser);
 
 // like a video
 usersRouter.put('/like/:videoId', verifyToken , likeVideo);
