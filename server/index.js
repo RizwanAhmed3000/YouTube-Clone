@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import authRouter from './Routes/authRoutes.js';
 import usersRouter from './Routes/usersRoutes.js';
 import videosRouter from './Routes/videosRoutes.js';
@@ -24,6 +25,7 @@ const connect = () => {
 };
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 
 // auth
