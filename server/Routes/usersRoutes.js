@@ -14,16 +14,16 @@ usersRouter.delete('/:id', verifyToken, deleteUser);
 usersRouter.get('/find/:id', getUser);
 
 // sub a user
-usersRouter.put('/sub/:channelId', verifyToken , subscribeUser);
+usersRouter.put('/sub/:id', verifyToken , subscribeUser);
 
 // unsub a user
-usersRouter.put('/unsub/:channelId', verifyToken , unsubscribeUser);
+usersRouter.put('/unsub/:id', verifyToken , unsubscribeUser);
 
 // like a video
-usersRouter.put('/like/:videoId', verifyToken , likeVideo);
+usersRouter.put('/like/:id', verifyToken , likeVideo);
 
 // dislike a video
-usersRouter.put('/dislike/:videoId', verifyToken , dislikeVideo);
+usersRouter.put('/dislike/:id', verifyToken , dislikeVideo);
 
 
 export default usersRouter;

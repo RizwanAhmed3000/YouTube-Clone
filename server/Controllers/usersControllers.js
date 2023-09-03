@@ -78,8 +78,8 @@ export const getUser = async (req, res) => {
 
 export const subscribeUser = async (req, res) => {
     try {
-        await User.findById(req.user.id, { $push: { subscribedUsers : req.params.channelId}});
-        await User.findByIdAndUpdate(req.params.channelId, { $inc: {subscribers: 1}});
+        await User.findByIdAndUpdate(req.user.id, { $push: { subscribedUsers : req.params.id}});
+        await User.findByIdAndUpdate(req.params.id, { $inc: {subscribers: 1}});
         res.status(200).send({
             status: "Success",
             message: "Subscribed User",
@@ -94,8 +94,8 @@ export const subscribeUser = async (req, res) => {
 
 export const unsubscribeUser = async (req, res) => {
     try {
-        await User.findById(req.user.id, { $pull: { subscribedUsers: req.params.channelId } });
-        await User.findByIdAndUpdate(req.params.channelId, { $inc: { subscribers: -1 } });
+        await User.findByIdAndUpdate(req.user.id, { $pull: { subscribedUsers: req.params.id } });
+        await User.findByIdAndUpdate(req.params.id, { $inc: { subscribers: -1 } });
         res.status(200).send({
             status: "Success",
             message: "unsubscribed User",

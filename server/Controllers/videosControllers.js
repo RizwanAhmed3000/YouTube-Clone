@@ -1,7 +1,8 @@
+import { User } from "../models/UserSchema.js";
 import { Video } from "../models/VideoSchema.js"
 
-export const addVideo = async(req, res) =>{
-    const newVideo = new Video({userId: req.user.id, ...req.body});
+export const addVideo = async (req, res) => {
+    const newVideo = new Video({ userId: req.user.id, ...req.body });
     try {
         const saveVideo = await newVideo.save();
         res.status(200).send({
@@ -16,18 +17,18 @@ export const addVideo = async(req, res) =>{
         })
     }
 }
-export const updateVideo = async(req, res) =>{
+export const updateVideo = async (req, res) => {
     try {
         const videoToUpdate = await Video.findById(req.params.id);
-        if(!videoToUpdate){
+        if (!videoToUpdate) {
             res.status(404).send({
                 status: "Fail",
                 message: "Video not found"
             });
             return;
         }
-        if(req.user.id === videoToUpdate.userId){
-            const updatedVideo = await Video.findByIdAndUpdate(req.params.id, {$set: req.body,}, { new : true});
+        if (req.user.id === videoToUpdate.userId) {
+            const updatedVideo = await Video.findByIdAndUpdate(req.params.id, { $set: req.body, }, { new: true });
             res.status(200).send({
                 status: "Success",
                 message: "Video Updated",
@@ -47,7 +48,7 @@ export const updateVideo = async(req, res) =>{
     }
 
 }
-export const deleteVideo = async(req, res) =>{
+export const deleteVideo = async (req, res) => {
     try {
         const videoToUpdate = await Video.findById(req.params.id);
         if (!videoToUpdate) {
@@ -76,10 +77,10 @@ export const deleteVideo = async(req, res) =>{
         })
     }
 }
-export const getVideo = async(req, res) =>{
+export const getVideo = async (req, res) => {
     try {
         const video = await Video.findById(req.params.id)
-        if(!video){
+        if (!video) {
             res.status(404).send({
                 status: "Fail",
                 message: "Video not found"
@@ -98,3 +99,77 @@ export const getVideo = async(req, res) =>{
         })
     }
 }
+
+export const addView = async (req, res) => {
+    try {
+        await Video.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } })
+        res.status(200).send({
+            status: "Success",
+            message: "view added",
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
+}
+
+export const getRandom = async (req, res) => {
+    try {
+        const randomVideos = await Video.aggregate([{ $sample: { size: 10 } }]);
+        res.status(200).send({
+            status: "Success",
+            message: "Random videos",
+            data: randomVideos
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
+}
+
+export const getTrending = async (req, res) => {
+    try {
+        const trendingVideos = await Video.find().sort({ views: -1 });
+        res.status(200).send({
+            status: "Success",
+            message: "trending Videos",
+            data: trendingVideos
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
+}
+
+export const sub = async (req, res) => {    
+    console.log("hi");
+    // try {
+    //     const user = await User.findById(req.user.id);
+    //     console.log(user);
+    //     const subscribedChannels = user.subscribedUsers;
+    //     console.log(subscribedChannels);
+
+    //     const list = await Promise.all(
+    //         subscribedChannels.map(async (channelId) => {
+    //             return await Video.find({ userId: channelId });
+    //         })
+    //     );
+    //     res.status(200).send({
+    //         status: "Success",
+    //         message: "All subscribed videos",
+    //         data: list
+    //     });
+    // } catch (error) {
+    //     res.status(500).send({
+    //         status: "Fail",
+    //         message: error.message
+    //     })
+    // }
+}
+

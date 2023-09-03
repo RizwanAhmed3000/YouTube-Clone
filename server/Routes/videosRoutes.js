@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../verifyToken.js";
-import { addVideo, updateVideo, deleteVideo, getVideo } from "../Controllers/videosControllers.js"
+import { addVideo, updateVideo, deleteVideo, getVideo, addView, getRandom, getTrending, sub } from "../Controllers/videosControllers.js"
 
 const videosRouter = express.Router();
 
@@ -26,7 +26,7 @@ videosRouter.get('/trend', getTrending);
 videosRouter.get('/random', getRandom);
 
 // add subs
-videosRouter.get('/sub', addSubs);
+videosRouter.get('/subscriber', verifyToken, sub);
 
 
 export default videosRouter;
