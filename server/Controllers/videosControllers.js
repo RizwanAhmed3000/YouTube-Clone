@@ -1,3 +1,4 @@
+import { query } from "express";
 import { User } from "../models/UserSchema.js";
 import { Video } from "../models/VideoSchema.js"
 
@@ -147,29 +148,60 @@ export const getTrending = async (req, res) => {
     }
 }
 
-export const sub = async (req, res) => {    
-    console.log("hi");
-    // try {
-    //     const user = await User.findById(req.user.id);
-    //     console.log(user);
-    //     const subscribedChannels = user.subscribedUsers;
-    //     console.log(subscribedChannels);
+export const sub = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const subscribedChannels = user.subscribedUsers;
 
-    //     const list = await Promise.all(
-    //         subscribedChannels.map(async (channelId) => {
-    //             return await Video.find({ userId: channelId });
-    //         })
-    //     );
-    //     res.status(200).send({
-    //         status: "Success",
-    //         message: "All subscribed videos",
-    //         data: list
-    //     });
-    // } catch (error) {
-    //     res.status(500).send({
-    //         status: "Fail",
-    //         message: error.message
-    //     })
-    // }
+        const list = await Promise.all(
+            subscribedChannels.map(async (channelId) => {
+                return await Video.find({ userId: channelId });
+            })
+        );
+        res.status(200).send({
+            status: "Success",
+            message: "All subscribed videos",
+            data: list.flat().sort((a, b) => b.createdAt - a.createdAt)
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
+}
+
+export const getByTags = async (req, res) => {
+    const tags = req.query.tags.split(",")
+    try {
+        const videosByTags = await Video.find({ tags: { $in: tags } }).limit(10)
+        res.status(200).send({
+            status: "Success",
+            message: "searched tags",
+            data: videosByTags
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
+}
+
+export const getBySearch = async (req, res) => {
+    const search = req.query.s
+    try {
+        const videos = await Video.find({title: {$regex: search, $options: "i"}}).limit(40)
+        res.status(200).send({
+            status: "Success",
+            message: "Searched videos",
+            data: videos
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 }
 

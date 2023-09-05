@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../verifyToken.js";
-import { addVideo, updateVideo, deleteVideo, getVideo, addView, getRandom, getTrending, sub } from "../Controllers/videosControllers.js"
+import { addVideo, updateVideo, deleteVideo, getVideo, addView, getRandom, getTrending, sub, getByTags, getBySearch } from "../Controllers/videosControllers.js"
 
 const videosRouter = express.Router();
 
@@ -14,7 +14,7 @@ videosRouter.put('/:id', verifyToken, updateVideo);
 videosRouter.delete('/:id', verifyToken, deleteVideo);
 
 // get a video
-videosRouter.get('/:id', getVideo);
+videosRouter.get('/find/:id', getVideo);
 
 // add views
 videosRouter.get('/view/:id', addView);
@@ -27,6 +27,12 @@ videosRouter.get('/random', getRandom);
 
 // add subs
 videosRouter.get('/subscriber', verifyToken, sub);
+
+// get by tags
+videosRouter.get('/tags', getByTags);
+
+// get by search
+videosRouter.get('/search', getBySearch);
 
 
 export default videosRouter;
