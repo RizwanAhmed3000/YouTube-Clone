@@ -1,4 +1,5 @@
 import { User } from "../models/UserSchema.js";
+import { Video } from "../models/VideoSchema.js";
 
 
 export const updateUser = async (req, res) => {
@@ -109,10 +110,46 @@ export const unsubscribeUser = async (req, res) => {
 };
 
 export const likeVideo = async (req, res) => {
+    const id = req.user.id;
+    const videoId = req.params.id;
+    try {
 
+        await Video.findByIdAndUpdate(videoId, {
+            $addToSet: {likes: id},
+            $pull:{dislikes: id}
+        })
+
+        res.status(200).send({
+            status: "Success",
+            message: "your like is added",
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 };
 
 export const dislikeVideo = async (req, res) => {
+    const id = req.user.id;
+    const videoId = req.params.id;
+    try {
 
+        await Video.findByIdAndUpdate(videoId, {
+            $addToSet: { dislikes: id },
+            $pull: { likes: id }
+        })
+
+        res.status(200).send({
+            status: "Success",
+            message: "your dislike is added",
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 };
 
