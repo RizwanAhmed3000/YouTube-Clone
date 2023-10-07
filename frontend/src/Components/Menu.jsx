@@ -1,15 +1,17 @@
 import { styled } from "styled-components";
 import logo from "../imgs/logo.png";
 import {
-    Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined
+    Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined, AccountCircleOutlined
 } from "@mui/icons-material";
 
 const Container = styled.div`
-    flex: 1;
-    background-color: #1e1d1e;
+    flex: 1.1;
+    background-color: ${({ theme }) => theme.bgLight};
     height: 100%;
-    color: white;
-    font-size: 15px;
+    color: ${({ theme }) => theme.text};
+    font-size: 14px;
+    position: sticky;
+    top: 0;
 `
 const Wrapper = styled.div`
     padding: 18px 20px;
@@ -36,10 +38,28 @@ const Items = styled.div`
 
 const Hr = styled.hr`
     margin: 10px 0px;
-    border: 0.5px solid #373737;
+    border: 0.5px solid ${({ theme }) => theme.soft};
 `
 
-export default function Menu() {
+const Login = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const Button = styled.button`
+    margin: 8px 0px 0px 0px;
+    padding: 5px;
+    border: 3px solid #2d6d99;
+    background-color: transparent;
+    color: #2d6d99;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+`
+
+export default function Menu({ darkMode, setDarkMode }) {
     return (
         <Container>
             <Wrapper>
@@ -63,6 +83,11 @@ export default function Menu() {
                 <Items>
                     <HistoryOutlined />History
                 </Items>
+                <Hr />
+                <Login>
+                    Sign in to like, comment and subscribe.
+                    <Button><AccountCircleOutlined />SIGN IN</Button>
+                </Login>
                 <Hr />
                 <Items>
                     <LibraryMusicOutlined />Music
@@ -92,7 +117,7 @@ export default function Menu() {
                 <Items>
                     <HelpOutlineOutlined />Help
                 </Items>
-                <Items>
+                <Items onClick={()=> setDarkMode(!darkMode)}>
                     <SettingsBrightnessOutlined />Light Mode
                 </Items>
             </Wrapper>
