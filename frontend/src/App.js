@@ -2,7 +2,10 @@ import { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Menu from "./Components/Menu";
 import Navbar from "./Components/Navbar";
+import Home from "./pages/Home";
+import Video from "./pages/Video";
 import { darkTheme, lightTheme } from "./utils/Theme";
+import { Route, BrowserRouter, Routes, redirect } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -21,13 +24,22 @@ function App() {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Container>
-        <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Main>
-          <Navbar />
-          <Wrapper>
-            <h1>hello</h1>
-          </Wrapper>
-        </Main>
+        <BrowserRouter>
+          <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="video">
+                    <Route path=":id" element={<Video />} />
+                  </Route>
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </BrowserRouter>
       </Container>
     </ThemeProvider>
 

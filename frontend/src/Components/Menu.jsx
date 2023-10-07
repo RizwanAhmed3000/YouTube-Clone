@@ -7,11 +7,12 @@ import {
 const Container = styled.div`
     flex: 1.1;
     background-color: ${({ theme }) => theme.bgLight};
-    height: 100%;
+    height: 100vh;
     color: ${({ theme }) => theme.text};
     font-size: 14px;
     position: sticky;
     top: 0;
+    overflow-y: scroll; 
 `
 const Wrapper = styled.div`
     padding: 18px 20px;
