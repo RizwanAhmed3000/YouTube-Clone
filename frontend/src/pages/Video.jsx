@@ -1,5 +1,6 @@
 import { AddTaskOutlined, Description, ReplyOutlined, ThumbDownOutlined, ThumbUpOutlined } from "@mui/icons-material"
 import { styled } from "styled-components"
+import Comments from "../Components/Comments"
 
 const Container = styled.div`
     display: flex;
@@ -119,7 +120,7 @@ export default function Video() {
                 <Hr />
                 <Channel>
                     <ChannelInfo>
-                        <Image src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png"/>
+                        <Image src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png" />
                         <ChannelDetails>
                             <ChannelName>my channel</ChannelName>
                             <ChannelSubscribers>200K subscribers</ChannelSubscribers>
@@ -128,6 +129,8 @@ export default function Video() {
                     </ChannelInfo>
                     <Subscribe>Subscribe</Subscribe>
                 </Channel>
+                <Hr />
+                <Comments />
             </Content>
             <Recommendations>Recommendations</Recommendations>
         </Container>
