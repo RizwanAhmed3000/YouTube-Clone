@@ -122,7 +122,7 @@ export default function Menu({ darkMode, setDarkMode }) {
                     <HelpOutlineOutlined />Help
                 </Items>
                 <Items onClick={() => setDarkMode(!darkMode)}>
-                    <SettingsBrightnessOutlined />Light Mode
+                    <SettingsBrightnessOutlined />{darkMode ? "Light" : "Dark"} Mode
                 </Items>
             </Wrapper>
         </Container>
