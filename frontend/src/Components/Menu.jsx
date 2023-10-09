@@ -3,6 +3,7 @@ import logo from "../imgs/logo.png";
 import {
     Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined, AccountCircleOutlined
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
     flex: 1.1;
@@ -64,10 +65,12 @@ export default function Menu({ darkMode, setDarkMode }) {
     return (
         <Container>
             <Wrapper>
-                <Logo>
-                    <Img src={logo} />
-                    Youtube
-                </Logo>
+                <Link to='/' style={{ textDecoration: "none", color: "inherit" }}>
+                    <Logo>
+                        <Img src={logo} />
+                        Youtube
+                    </Logo>
+                </Link>
                 <Items>
                     <Home />Home
                 </Items>
@@ -118,7 +121,7 @@ export default function Menu({ darkMode, setDarkMode }) {
                 <Items>
                     <HelpOutlineOutlined />Help
                 </Items>
-                <Items onClick={()=> setDarkMode(!darkMode)}>
+                <Items onClick={() => setDarkMode(!darkMode)}>
                     <SettingsBrightnessOutlined />Light Mode
                 </Items>
             </Wrapper>

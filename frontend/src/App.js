@@ -15,7 +15,9 @@ const Main = styled.div`
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
 `;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 20px 30px;
+`;
 
 function App() {
 
