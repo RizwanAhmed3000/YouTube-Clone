@@ -6,22 +6,34 @@ import Home from "./pages/Home";
 import Video from "./pages/Video";
 import { darkTheme, lightTheme } from "./utils/Theme";
 import { Route, BrowserRouter, Routes, redirect } from "react-router-dom";
+import SignIn from "./pages/SignIn";
 
 const Container = styled.div`
   display: flex;
+  &::-webkit-scrollbar{
+        width: 10px;
+    }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.soft}; 
+  }
 `;
 const Main = styled.div` 
   flex: 7;
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
+  
 `;
 const Wrapper = styled.div`
   padding: 20px 30px;
+  
 `;
 
 function App() {
 
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(true)
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -34,6 +46,7 @@ function App() {
               <Routes>
                 <Route path="/">
                   <Route index element={<Home />} />
+                  <Route path="/signin" element={<SignIn />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>

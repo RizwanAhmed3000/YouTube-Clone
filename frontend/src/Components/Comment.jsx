@@ -6,8 +6,8 @@ const Container = styled.div`
     margin: 30px 0px;
 `
 const Avatar = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 `
 

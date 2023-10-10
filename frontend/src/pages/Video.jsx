@@ -1,6 +1,7 @@
 import { AddTaskOutlined, Description, ReplyOutlined, ThumbDownOutlined, ThumbUpOutlined } from "@mui/icons-material"
 import { styled } from "styled-components"
 import Comments from "../Components/Comments"
+import Cards from "../Components/Cards.jsx"
 
 const Container = styled.div`
     display: flex;
@@ -52,7 +53,6 @@ const Hr = styled.hr`
 
 const Recommendations = styled.div`
     flex: 2; 
-    border: 1px solid red;
 `
 
 const Channel = styled.div`
@@ -88,7 +88,6 @@ const VideoDescription = styled.p`
     font-size: 14px;
 `
 
-
 const Subscribe = styled.button`
     background-color: #cc1a00;
     font-weight: 500;
@@ -105,7 +104,7 @@ export default function Video() {
         <Container>
             <Content>
                 <VideoWrapper>
-                    <iframe width="853" height="480" src="https://www.youtube.com/embed/yIaXoop8gl4" title="React Video Sharing App UI Design | Youtube UI Clone with React" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="100%" height="480" src="https://www.youtube.com/embed/yIaXoop8gl4" title="React Video Sharing App UI Design | Youtube UI Clone with React" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </VideoWrapper>
                 <Title>Test Video</Title>
                 <Details>
@@ -132,7 +131,20 @@ export default function Video() {
                 <Hr />
                 <Comments />
             </Content>
-            <Recommendations>Recommendations</Recommendations>
+            <Recommendations>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+                <Cards type="sm"/>
+            </Recommendations>
         </Container>
     )
 }

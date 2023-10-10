@@ -1,4 +1,5 @@
 import { AccountCircleOutlined, SearchOutlined } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import { styled } from "styled-components"
 
 const Container = styled.div`
@@ -30,6 +31,8 @@ const Input = styled.input`
     border: none;
     background-color: transparent;
     width: 100%;
+    outline: none;
+    color: ${({ theme }) => theme.text};
 `;
 
 const Button = styled.button`
@@ -51,9 +54,11 @@ export default function Navbar() {
             <Wrapper>
                 <Search>
                     <Input placeholder="Search" />
-                    <SearchOutlined />
+                    <SearchOutlined style={{ cursor: "pointer" }} />
                 </Search>
-                <Button><AccountCircleOutlined />SIGN IN</Button>
+                <Link to="/signin" style={{ textDecoration: "none" }}>
+                    <Button><AccountCircleOutlined />SIGN IN</Button>
+                </Link>
             </Wrapper>
         </Container>
     )

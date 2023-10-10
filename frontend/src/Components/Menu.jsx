@@ -14,6 +14,16 @@ const Container = styled.div`
     position: sticky;
     top: 0;
     overflow-y: scroll; 
+    &::-webkit-scrollbar{
+        width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => theme.soft}; 
+    }
+
 `
 const Wrapper = styled.div`
     padding: 18px 20px;
@@ -36,6 +46,9 @@ const Items = styled.div`
     gap: 20px;
     padding: 7px 0px;
     cursor: pointer;
+    &:hover{
+        background-color: ${({ theme }) => theme.soft};
+    }
 `
 
 const Hr = styled.hr`
@@ -90,7 +103,9 @@ export default function Menu({ darkMode, setDarkMode }) {
                 <Hr />
                 <Login>
                     Sign in to like, comment and subscribe.
-                    <Button><AccountCircleOutlined />SIGN IN</Button>
+                    <Link to="/signin" style={{ textDecoration: "none" }}>
+                        <Button><AccountCircleOutlined />SIGN IN</Button>
+                    </Link>
                 </Login>
                 <Hr />
                 <Items>
