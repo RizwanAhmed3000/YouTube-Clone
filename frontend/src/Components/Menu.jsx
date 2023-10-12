@@ -4,6 +4,7 @@ import {
     Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined, AccountCircleOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
     flex: 1.1;
@@ -75,6 +76,10 @@ const Button = styled.button`
 `
 
 export default function Menu({ darkMode, setDarkMode }) {
+
+    const { currentUser } = useSelector(state => state.user)
+
+
     return (
         <Container>
             <Wrapper>
@@ -105,13 +110,18 @@ export default function Menu({ darkMode, setDarkMode }) {
                     <HistoryOutlined />History
                 </Items>
                 <Hr />
-                <Login>
-                    Sign in to like, comment and subscribe.
-                    <Link to="/signin" style={{ textDecoration: "none" }}>
-                        <Button><AccountCircleOutlined />SIGN IN</Button>
-                    </Link>
-                </Login>
-                <Hr />
+                {!currentUser ?
+                    <>
+                        <Login>
+                            Sign in to like, comment and subscribe.
+                            <Link to="/signin" style={{ textDecoration: "none" }}>
+                                <Button><AccountCircleOutlined />SIGN IN</Button>
+                            </Link>
+                        </Login>
+                        <Hr />
+                    </>
+                    : ""
+                }
                 <Items>
                     <LibraryMusicOutlined />Music
                 </Items>
