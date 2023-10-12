@@ -1,5 +1,7 @@
 import React from 'react'
+import { useState } from 'react';
 import { styled } from 'styled-components'
+import axios from "axios";
 
 const Container = styled.div`
     display: flex;
@@ -33,7 +35,7 @@ const Input = styled.input`
     border: 1px solid ${({ theme }) => theme.soft};
     border-radius: 5px;
     background-color: transparent;
-    color: ${({ theme }) => theme.text}
+    color: ${({ theme }) => theme.text};
 `
 
 const Button = styled.button`
@@ -52,21 +54,35 @@ const Button = styled.button`
 
 const More = styled.div`
     
-`
+`;
 
 export default function SignIn() {
+
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function signinHandler() {
+        try {
+            const res = await axios.post(`http://localhost:8800/auth/signin`, { email, password })
+            console.log(res.data, "==> sign in api hit");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <Container>
             <Wrapper>
                 <Title>Sign In</Title>
                 <SubTitle>sign in to like and subscribe</SubTitle>
-                <Input placeholder='Username' />
-                <Input type="password" placeholder='Password' />
-                <Button>Sign In</Button>
+                <Input placeholder='Email' type="email" onChange={(e) => setEmail(e.target.value)} />
+                <Input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+                <Button onClick={signinHandler}>Sign In</Button>
                 <Title>Or</Title>
-                <Input placeholder='Username' />
-                <Input placeholder='Email' type="email" />
-                <Input type="password" placeholder='Password' />
+                <Input placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
+                <Input placeholder='Email' type="email" onChange={(e) => setEmail(e.target.value)} />
+                <Input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
                 <Button>Sign Up</Button>
             </Wrapper>
         </Container>
