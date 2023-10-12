@@ -63,18 +63,25 @@ export default function SignIn() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState({});
     const dispatch = useDispatch()
 
     async function signinHandler() {
-        dispatch(LoginStart());
-        try {
-            const res = await axios.post(`http://localhost:8800/auth/signin`, { email, password })
-            console.log(res.data, "==> sign in api hit");
-            dispatch(LoginSuccess(res.data.data))
-        } catch (error) {
-            console.log(error.response.data);
-            dispatch(LoginFailed())
+        if (email === "" && password === "") {
+            alert("email and password can not be empty")
+        } else {
+            dispatch(LoginStart());
+            try {
+                const res = await axios.post(`http://localhost:8800/auth/signin`, { email, password })
+                console.log(res.data, "==> sign in api hit");
+                dispatch(LoginSuccess(res.data.data))
+            } catch (error) {
+                console.log(error.response.data);
+                setError(error.response.data)
+                dispatch(LoginFailed())
+            }
         }
+
     }
 
     return (
