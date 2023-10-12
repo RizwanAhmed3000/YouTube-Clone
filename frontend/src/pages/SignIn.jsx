@@ -54,10 +54,6 @@ const Button = styled.button`
     border-radius: 5px;
 `
 
-const More = styled.div`
-    
-`;
-
 export default function SignIn() {
 
     const [username, setUsername] = useState("");
