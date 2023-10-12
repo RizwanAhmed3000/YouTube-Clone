@@ -1,5 +1,8 @@
+import { useEffect } from "react";
+import { useState } from "react"
 import { styled } from "styled-components"
 import Cards from "../Components/Cards"
+import axios from "axios"
 
 const Container = styled.div`
     display: flex;
@@ -7,25 +10,27 @@ const Container = styled.div`
     flex-wrap: wrap;
 `
 
-export default function Home() {
+export default function Home({ type }) {
+
+    const [videos, setVideos] = useState([]);
+
+    useEffect(() => {
+
+        const fetchVideos = async () => {
+            const res = await axios.get(`http://localhost:8800/videos/${type}`);
+            // console.log(res.data.data, "==> data from api");
+            setVideos(res.data.data)
+        }
+        fetchVideos();
+    }, [type])
+
     return (
         <Container>
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
-            <Cards />
+            {
+                videos.map((video) => (
+                    <Cards key={video._id} video={video} />
+                ))
+            }
         </Container>
     )
 }

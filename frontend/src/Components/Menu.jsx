@@ -87,12 +87,16 @@ export default function Menu({ darkMode, setDarkMode }) {
                 <Items>
                     <Home />Home
                 </Items>
-                <Items>
-                    <ExploreOutlined />Explore
-                </Items>
-                <Items>
-                    <SubscriptionsOutlined />Subscriptions
-                </Items>
+                <Link to="/trends" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Items>
+                        <ExploreOutlined />Explore
+                    </Items>
+                </Link>
+                <Link to="/subscriptions" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Items>
+                        <SubscriptionsOutlined />Subscriptions
+                    </Items>
+                </Link>
                 <Hr />
                 <Items>
                     <VideoLibraryOutlined />Library

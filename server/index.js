@@ -6,8 +6,11 @@ import authRouter from './Routes/authRoutes.js';
 import usersRouter from './Routes/usersRoutes.js';
 import videosRouter from './Routes/videosRoutes.js';
 import commentsRouter from './Routes/commentsRoutes.js';
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
 
 const PORT = 8800;
 

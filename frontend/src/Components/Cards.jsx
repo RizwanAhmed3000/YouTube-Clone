@@ -1,5 +1,8 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components"
+import { format } from "timeago.js";
 
 const Container = styled.div`
     width: ${(props) => props.type !== "sm" && "300px"};
@@ -58,17 +61,31 @@ const Info = styled.p`
     color: ${({ theme }) => theme.textSoft};
 `
 
-export default function Cards({ type }) {
+export default function Cards({ type, video }) {
+    // console.log(video, "==> video in card");
+
+    const [channel, setChannel] = useState({});
+
+    useEffect(() => {
+
+        const fetchChannel = async () => {
+            const res = await axios.get(`http://localhost:8800/user/find/${video?.userId}`);
+            // console.log(res?.data?.data, "==> data from api");
+            setChannel(res.data.data)
+        }
+        fetchChannel();
+    }, [video?.userId])
+
     return (
         <Link to='/video/test' style={{ textDecoration: "none" }}>
             <Container type={type}>
-                <Image type={type} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOePNWT93vwpHCtezIGfxwV3MdNZIoqKa-fg&usqp=CAU" />
+                <Image type={type} src={video?.thumbnail ? video?.thumbnail : `https://i.ytimg.com/vi/jEhwOtBwYoE/maxresdefault.jpg`} />
                 <Details type={type}>
-                    <ChannelImage type={type} src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png" />
+                    <ChannelImage type={type} src={channel?.profilePicture ? channel?.profilePicture : `https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png`} />
                     <TextContaner type={type}>
-                        <Title>New video</Title>
-                        <ChannelName>my channel</ChannelName>
-                        <Info>90k 3 days ago</Info>
+                        <Title>{video?.title}</Title>
+                        <ChannelName>{channel?.userName}</ChannelName>
+                        <Info>{video?.views} views . {format(video?.createdAt)}</Info>
                     </TextContaner>
                 </Details>
             </Container>
