@@ -9,10 +9,8 @@ import commentsRouter from './Routes/commentsRoutes.js';
 import cors from "cors";
 
 const app = express();
-
-app.use(cors());
-
 const PORT = 8800;
+app.use(cors());
 
 dotenv.config();
 
