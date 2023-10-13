@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { styled } from 'styled-components'
 import axios from "axios";
 import { useDispatch } from 'react-redux';
-import { LoginFailed, LoginStart, LoginSuccess } from '../Redux/userSlice';
+import { loginFailure, loginStart, loginSuccess } from '../Redux/userSlice';
 
 const Container = styled.div`
     display: flex;
@@ -62,19 +62,20 @@ export default function SignIn() {
     const [error, setError] = useState({});
     const dispatch = useDispatch()
 
-    async function signinHandler() {
+    async function signinHandler(e) {
+        e.preventDefault();
         if (email === "" && password === "") {
             alert("email and password can not be empty")
         } else {
-            dispatch(LoginStart());
+            dispatch(loginStart());
             try {
                 const res = await axios.post(`http://localhost:8800/auth/signin`, { email, password })
                 console.log(res.data, "==> sign in api hit");
-                dispatch(LoginSuccess(res.data.data))
+                dispatch(loginSuccess(res.data.data))
             } catch (error) {
                 console.log(error.response.data);
                 setError(error.response.data)
-                dispatch(LoginFailed())
+                dispatch(loginFailure())
             }
         }
 

@@ -13,6 +13,7 @@ const Container = styled.div`
 export default function Home({ type }) {
 
     const [videos, setVideos] = useState([]);
+    console.log(type);
 
     useEffect(() => {
 

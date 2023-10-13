@@ -10,10 +10,9 @@ import {
     PERSIST,
     PURGE,
     REGISTER,
-} from "redux-persist";
+} from 'redux-persist'
 
-import storage from "redux-persist/lib/storage";
-import { PersistGate } from "redux-persist/integration/react";
+import storage from 'redux-persist/lib/storage'
 
 const persistConfig = {
     key: "root",
@@ -39,4 +38,4 @@ export const store = configureStore({
         }),
 })
 
-export const persistor = persistStore(store)
+export let persistor = persistStore(store)
