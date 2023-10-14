@@ -69,7 +69,7 @@ export default function SignIn() {
         } else {
             dispatch(loginStart());
             try {
-                const res = await axios.post(`http://localhost:8800/auth/signin`, { email, password }, { withCredentials: true })
+                const res = await axios.post(`/auth/signin`, { email, password })
                 console.log(res.data, "==> sign in api hit");
                 dispatch(loginSuccess(res.data.data))
             } catch (error) {
