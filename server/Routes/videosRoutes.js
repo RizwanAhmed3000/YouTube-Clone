@@ -5,16 +5,13 @@ import { addVideo, updateVideo, deleteVideo, getVideo, addView, getRandom, getTr
 const videosRouter = express.Router();
 
 // add video
-// videosRouter.post('/', verifyToken, addVideo);
-videosRouter.post('/', addVideo);
+videosRouter.post('/', verifyToken, addVideo);
 
 // update video
-// videosRouter.put('/:id', verifyToken, updateVideo);
-videosRouter.put('/:id', updateVideo);
+videosRouter.put('/:id', verifyToken, updateVideo);
 
 // delete video
-// videosRouter.delete('/:id', verifyToken, deleteVideo);
-videosRouter.delete('/:id', deleteVideo);
+videosRouter.delete('/:id', verifyToken, deleteVideo);
 
 // get a video
 videosRouter.get('/find/:id', getVideo);
@@ -29,8 +26,7 @@ videosRouter.get('/trend', getTrending);
 videosRouter.get('/random', getRandom);
 
 // add subs
-// videosRouter.get('/subscriber', verifyToken, sub);
-videosRouter.get('/subscriber/:id', sub);
+videosRouter.get('/subscriber', verifyToken, sub);
 
 // get by tags
 videosRouter.get('/tags', getByTags);

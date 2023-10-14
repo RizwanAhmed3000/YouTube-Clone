@@ -150,9 +150,7 @@ export const getTrending = async (req, res) => {
 
 export const sub = async (req, res) => {
     try {
-        // console.log(req.params);
-        
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.user.id);
         const subscribedChannels = user.subscribedUsers;
 
         const list = await Promise.all(
@@ -193,7 +191,7 @@ export const getByTags = async (req, res) => {
 export const getBySearch = async (req, res) => {
     const search = req.query.s
     try {
-        const videos = await Video.find({title: {$regex: search, $options: "i"}}).limit(40)
+        const videos = await Video.find({ title: { $regex: search, $options: "i" } }).limit(40)
         res.status(200).send({
             status: "Success",
             message: "Searched videos",

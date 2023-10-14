@@ -6,15 +6,12 @@ import { verifyToken } from "../verifyToken.js"
 const commentsRouter = express.Router();
 
 // add comment
-// commentsRouter.post('/', verifyToken, addComment);
-commentsRouter.post('/', addComment);
+commentsRouter.post('/', verifyToken, addComment);
 
 // update comment
-// commentsRouter.get('/:videoId', verifyToken, getComments);
-commentsRouter.get('/:videoId', getComments);
+commentsRouter.get('/:videoId', verifyToken, getComments);
 
 // delete comment
-// commentsRouter.delete('/:id', verifyToken, deleteComment);
-commentsRouter.delete('/:id', deleteComment);
+commentsRouter.delete('/:id', verifyToken, deleteComment);
 
 export default commentsRouter;
