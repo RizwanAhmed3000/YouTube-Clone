@@ -150,7 +150,9 @@ export const getTrending = async (req, res) => {
 
 export const sub = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        // console.log(req.params);
+        
+        const user = await User.findById(req.params.id);
         const subscribedChannels = user.subscribedUsers;
 
         const list = await Promise.all(

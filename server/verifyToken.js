@@ -11,6 +11,7 @@ export const verifyToken = (req, res, next) => {
         return
     }
     Jwt.verify(token, process.env.JWT, (err, user) => {
+        console.log(user);
         if (err) {
             res.status(403).send({
                 status: "Fail",
