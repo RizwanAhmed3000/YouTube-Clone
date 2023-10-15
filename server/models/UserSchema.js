@@ -16,7 +16,6 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
         min: 8
     },
     profilePicture: {
@@ -29,6 +28,10 @@ const UserSchema = new mongoose.Schema({
     },
     subscribedUsers: {
         type: [String],
+    },
+    fromGoogle: {
+        type: Boolean,
+        default: false
     }
 },
     { timestamps: true }

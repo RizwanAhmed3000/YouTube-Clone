@@ -4,6 +4,9 @@ import { styled } from 'styled-components'
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { loginFailure, loginStart, loginSuccess } from '../Redux/userSlice';
+import { auth, provider } from '../firebaseConfig/Config.js';
+import { signInWithPopup } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
     display: flex;
@@ -43,7 +46,7 @@ const Input = styled.input`
 const Button = styled.button`
     margin: 8px;
     padding: 10px 20px;
-    width: 100px;
+    width: 100%;
     border: 3px solid ${({ theme }) => theme.soft};
     background-color: ${({ theme }) => theme.soft};
     color: ${({ theme }) => theme.text};
@@ -61,6 +64,7 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState({});
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     async function signinHandler(e) {
         e.preventDefault();
@@ -72,13 +76,30 @@ export default function SignIn() {
                 const res = await axios.post(`/auth/signin`, { email, password })
                 console.log(res.data, "==> sign in api hit");
                 dispatch(loginSuccess(res.data.data))
+                navigate('/')
             } catch (error) {
                 console.log(error.response.data);
                 setError(error.response.data)
                 dispatch(loginFailure())
             }
         }
+    }
 
+    async function signinWithGoogle() {
+        signInWithPopup(auth, provider).then((result) => {
+            dispatch(loginStart());
+            axios.post('/auth/googleAuth', {
+                userName: result.user.displayName,
+                email: result.user.email,
+                profilePicture: result.user.photoURL,
+            }).then((res) => {
+                dispatch(loginSuccess(res.data.data))
+            })
+            navigate('/')
+        }).catch(error => {
+            console.log(error);
+            dispatch(loginFailure())
+        })
     }
 
     return (
@@ -89,6 +110,8 @@ export default function SignIn() {
                 <Input placeholder='Email' type="email" onChange={(e) => setEmail(e.target.value)} />
                 <Input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
                 <Button onClick={signinHandler}>Sign In</Button>
+                <Title>Or</Title>
+                <Button onClick={signinWithGoogle}>Sign In With Google</Button>
                 <Title>Or</Title>
                 <Input placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
                 <Input placeholder='Email' type="email" onChange={(e) => setEmail(e.target.value)} />

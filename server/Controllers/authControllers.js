@@ -54,7 +54,7 @@ export const signin = async (req, res) => {
         };
 
         const token = jwt.sign({ id: user._id }, process.env.JWT);
-        console.log(token, "===> access token from signin");
+        // console.log(token, "===> access token from signin");
         const { password, ...other } = user._doc;
         res.cookie("access_token", token, {
             httpOnly: true
@@ -72,6 +72,39 @@ export const signin = async (req, res) => {
 
 };
 
-export const googleAuth = (req, res) => {
-
+export const googleAuth = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (user) {
+            const token = jwt.sign({ id: user._id }, process.env.JWT);
+            // console.log(token, "===> access token from signin");
+            res.cookie("access_token", token, {
+                httpOnly: true
+            }).status(200).send({
+                status: "Success",
+                message: "User sign in successfully",
+                data: user._doc
+            });
+        } else {
+            const newUser = new User({
+                ...req.body,
+                fromGoogle: true
+            })
+            const saveUser = await newUser.save();
+            const token = jwt.sign({ id: saveUser._id }, process.env.JWT);
+            // console.log(token, "===> access token from signin");
+            res.cookie("access_token", token, {
+                httpOnly: true
+            }).status(200).send({
+                status: "Success",
+                message: "User sign in successfully",
+                data: saveUser._doc
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: "Fail",
+            message: error.message
+        })
+    }
 };

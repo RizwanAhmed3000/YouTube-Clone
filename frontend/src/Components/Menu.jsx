@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
 import logo from "../imgs/logo.png";
 import {
-    Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined, AccountCircleOutlined
+    Home, ExploreOutlined, SubscriptionsOutlined, VideoLibraryOutlined, HistoryOutlined, LibraryMusicOutlined, SportsBasketballOutlined, SportsEsportsOutlined, MovieCreationOutlined, ArticleOutlined, LiveTvOutlined, SettingsOutlined, OutlinedFlagOutlined, HelpOutlineOutlined, SettingsBrightnessOutlined, AccountCircleOutlined, Logout
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Redux/userSlice";
 
 const Container = styled.div`
     flex: 1.1;
@@ -77,7 +78,12 @@ const Button = styled.button`
 
 export default function Menu({ darkMode, setDarkMode }) {
 
+    const dispatch = useDispatch()
     const { currentUser } = useSelector(state => state.user)
+    
+    async function signoutHandler(){
+        dispatch(logout());
+    }
 
 
     return (
@@ -120,7 +126,12 @@ export default function Menu({ darkMode, setDarkMode }) {
                         </Login>
                         <Hr />
                     </>
-                    : ""
+                    : <>
+                        <Login>
+                            <Button onClick={signoutHandler}><Logout />SIGN OUT</Button>
+                        </Login>
+                        <Hr />
+                    </>
                 }
                 <Items>
                     <LibraryMusicOutlined />Music
