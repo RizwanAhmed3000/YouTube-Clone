@@ -2,6 +2,13 @@ import { AddTaskOutlined, Description, ReplyOutlined, ThumbDownOutlined, ThumbUp
 import { styled } from "styled-components"
 import Comments from "../Components/Comments"
 import Cards from "../Components/Cards.jsx"
+import { useDispatch, useSelector } from "react-redux"
+import { useLocation } from "react-router-dom"
+import { useState } from "react"
+import { useEffect } from "react"
+import axios from "axios"
+import { fetchStart, fetchSuccess } from "../Redux/videoSlice"
+import { format } from "timeago.js"
 
 const Container = styled.div`
     display: flex;
@@ -100,17 +107,43 @@ const Subscribe = styled.button`
 `
 
 export default function Video() {
+    const dispatch = useDispatch()
+    const { currentUser } = useSelector(state => state.user)
+    const { currentVideo } = useSelector(state => state.video)
+    const path = useLocation().pathname.split("/")[2]
+    // console.log(path, "==> path useLocation");
+    // console.log(currentVideo, "==>> current video");
+
+    const [channel, setChannel] = useState({});
+
+    useEffect(() => {
+        const fetchVideo = async () => {
+            dispatch(fetchStart())
+            try {
+                const videoRes = await axios.get(`/videos/find/${path}`)
+                // console.log(videoRes?.data?.data, "===> video res")
+                const channel = await axios.get(`/user/find/${videoRes?.data?.data?.userId}`)
+                // console.log(channel?.data?.data, "===> channel res")
+                setChannel(channel?.data?.data)
+                dispatch(fetchSuccess(videoRes?.data?.data))
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchVideo()
+    }, [path, dispatch])
+
     return (
         <Container>
             <Content>
                 <VideoWrapper>
                     <iframe width="100%" height="480" src="https://www.youtube.com/embed/yIaXoop8gl4" title="React Video Sharing App UI Design | Youtube UI Clone with React" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </VideoWrapper>
-                <Title>Test Video</Title>
+                <Title>{currentVideo?.title}</Title>
                 <Details>
-                    <Info>84K views  1 year ago</Info>
+                    <Info>{currentVideo?.views} views {format(currentVideo?.createdAt)}</Info>
                     <Buttons>
-                        <Button><ThumbUpOutlined style={{ marginRight: "5px" }} />123</Button>
+                        <Button><ThumbUpOutlined style={{ marginRight: "5px" }} />{currentVideo?.likes?.length}</Button>
                         <Button><ThumbDownOutlined style={{ marginRight: "5px" }} />Dislike</Button>
                         <Button><ReplyOutlined style={{ marginRight: "5px" }} />Share</Button>
                         <Button><AddTaskOutlined style={{ marginRight: "5px" }} />Save</Button>
@@ -119,11 +152,11 @@ export default function Video() {
                 <Hr />
                 <Channel>
                     <ChannelInfo>
-                        <Image src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png" />
+                        <Image src={channel?.profilePicture ? channel?.profilePicture : "https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png"} />
                         <ChannelDetails>
-                            <ChannelName>my channel</ChannelName>
-                            <ChannelSubscribers>200K subscribers</ChannelSubscribers>
-                            <VideoDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat, aliquid inventore magni provident ducimus alias, reiciendis ea aliquam quo iure nemo nam corrupti nobis? Quis voluptates qui illum sit illo.</VideoDescription>
+                            <ChannelName>{channel?.userName}</ChannelName>
+                            <ChannelSubscribers>{channel?.subscribers} subscribers</ChannelSubscribers>
+                            <VideoDescription>{currentVideo?.description}</VideoDescription>
                         </ChannelDetails>
                     </ChannelInfo>
                     <Subscribe>Subscribe</Subscribe>
@@ -131,20 +164,20 @@ export default function Video() {
                 <Hr />
                 <Comments />
             </Content>
-            <Recommendations>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-                <Cards type="sm"/>
-            </Recommendations>
+            {/* <Recommendations>
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+                <Cards type="sm" />
+            </Recommendations> */}
         </Container>
     )
 }

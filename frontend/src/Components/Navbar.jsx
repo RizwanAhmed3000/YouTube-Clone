@@ -60,7 +60,7 @@ const User = styled.div`
 export default function Navbar() {
 
     const { currentUser } = useSelector(state => state.user)
-    console.log(currentUser, "====>>  current user from redux");
+    // console.log(currentUser, "====>>  current user from redux");
 
     return (
         <Container>

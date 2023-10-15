@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux"
 import { styled } from "styled-components"
 import Comment from "./Comment"
 
@@ -27,10 +28,12 @@ const Input = styled.input`
 `
 
 export default function Comments() {
+    const { currentUser } = useSelector(state => state.user)
+
     return (
         <Container>
             <NewComment>
-                <Avatar src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png" />
+                <Avatar src={currentUser?.profilePicture ? currentUser?.profilePicture : "https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png"} />
                 <Input placeholder="Add comments" />
             </NewComment>
             <Comment />
