@@ -1,4 +1,4 @@
-import { AddTaskOutlined, Description, ReplyOutlined, ThumbDownOutlined, ThumbUpOutlined } from "@mui/icons-material"
+import { AddTaskOutlined, Description, ReplyOutlined, ThumbDown, ThumbDownOutlined, ThumbUp, ThumbUpOutlined } from "@mui/icons-material"
 import { styled } from "styled-components"
 import Comments from "../Components/Comments"
 import Cards from "../Components/Cards.jsx"
@@ -143,8 +143,8 @@ export default function Video() {
                 <Details>
                     <Info>{currentVideo?.views} views {format(currentVideo?.createdAt)}</Info>
                     <Buttons>
-                        <Button><ThumbUpOutlined style={{ marginRight: "5px" }} />{currentVideo?.likes?.length}</Button>
-                        <Button><ThumbDownOutlined style={{ marginRight: "5px" }} />Dislike</Button>
+                        <Button>{currentVideo?.likes?.includes(currentUser?._id) ? <ThumbUp style={{ marginRight: "5px" }} />  :<ThumbUpOutlined style={{ marginRight: "5px" }} />}{currentVideo?.likes?.length}</Button>
+                        <Button>{currentVideo?.dislikes?.includes(currentUser?._id) ? <ThumbDown style={{ marginRight: "5px" }} /> :<ThumbDownOutlined style={{ marginRight: "5px" }} />}Dislike</Button>
                         <Button><ReplyOutlined style={{ marginRight: "5px" }} />Share</Button>
                         <Button><AddTaskOutlined style={{ marginRight: "5px" }} />Save</Button>
                     </Buttons>
