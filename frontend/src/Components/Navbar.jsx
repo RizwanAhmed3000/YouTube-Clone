@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components"
 import { useSelector } from "react-redux"
 import { Avatar } from "@mui/material";
+import { useState } from "react";
+import UploadPopup from "./UploadPopup";
 
 const Container = styled.div`
     position: sticky;
@@ -61,26 +63,30 @@ export default function Navbar() {
 
     const { currentUser } = useSelector(state => state.user)
     // console.log(currentUser, "====>>  current user from redux");
+    const [uploadVideoPopup, setUploadVideoPopup] = useState(false);
 
     return (
-        <Container>
-            <Wrapper>
-                <Search>
-                    <Input placeholder="Search" />
-                    <SearchOutlined style={{ cursor: "pointer" }} />
-                </Search>
-                {
-                    currentUser ?
-                        <User>
-                            <VideoCallOutlined />
-                            <Avatar src={currentUser?.profilePicture ? currentUser?.profilePicture : ''}/>
-                            {currentUser?.userName}
-                        </User>
-                        : <Link to="/signin" style={{ textDecoration: "none" }}>
-                            <Button><AccountCircleOutlined />SIGN IN</Button>
-                        </Link>
-                }
-            </Wrapper>
-        </Container>
+        <>
+            <Container>
+                <Wrapper>
+                    <Search>
+                        <Input placeholder="Search" />
+                        <SearchOutlined style={{ cursor: "pointer" }} />
+                    </Search>
+                    {
+                        currentUser ?
+                            <User>
+                                <VideoCallOutlined onClick={() => setUploadVideoPopup(true)} style={{ cursor: "pointer" }} />
+                                <Avatar src={currentUser?.profilePicture ? currentUser?.profilePicture : ''} />
+                                {currentUser?.userName}
+                            </User>
+                            : <Link to="/signin" style={{ textDecoration: "none" }}>
+                                <Button><AccountCircleOutlined />SIGN IN</Button>
+                            </Link>
+                    }
+                </Wrapper>
+            </Container>
+            {uploadVideoPopup && <UploadPopup setUploadVideoPopup={setUploadVideoPopup} />}
+        </>
     )
 }
