@@ -7,8 +7,9 @@ import { useLocation } from "react-router-dom"
 import { useState } from "react"
 import { useEffect } from "react"
 import axios from "axios"
-import { fetchStart, fetchSuccess } from "../Redux/videoSlice"
+import { fetchStart, fetchSuccess, like, dislike, fetchFailure } from "../Redux/videoSlice"
 import { format } from "timeago.js"
+import { subscription } from "../Redux/userSlice"
 
 const Container = styled.div`
     display: flex;
@@ -133,6 +134,23 @@ export default function Video() {
         fetchVideo()
     }, [path, dispatch])
 
+    async function likeHandler() {
+        await axios.put(`/user/like/${currentVideo._id}`)
+        dispatch(like(currentUser._id));
+    }
+
+    async function dislikeHandler() {
+        await axios.put(`/user/dislike/${currentVideo._id}`)
+        dispatch(dislike(currentUser._id));
+    }
+
+    async function subscribeHandler() {
+        currentUser?.subscribedUsers?.includes(channel?._id) ?
+            await axios.put(`/user/unsub/${channel?._id}`) :
+            await axios.put(`/user/sub/${channel?._id}`)
+        dispatch(subscription(channel?._id))
+    }
+
     return (
         <Container>
             <Content>
@@ -143,10 +161,18 @@ export default function Video() {
                 <Details>
                     <Info>{currentVideo?.views} views {format(currentVideo?.createdAt)}</Info>
                     <Buttons>
-                        <Button>{currentVideo?.likes?.includes(currentUser?._id) ? <ThumbUp style={{ marginRight: "5px" }} />  :<ThumbUpOutlined style={{ marginRight: "5px" }} />}{currentVideo?.likes?.length}</Button>
-                        <Button>{currentVideo?.dislikes?.includes(currentUser?._id) ? <ThumbDown style={{ marginRight: "5px" }} /> :<ThumbDownOutlined style={{ marginRight: "5px" }} />}Dislike</Button>
-                        <Button><ReplyOutlined style={{ marginRight: "5px" }} />Share</Button>
-                        <Button><AddTaskOutlined style={{ marginRight: "5px" }} />Save</Button>
+                        <Button onClick={likeHandler}>
+                            {currentVideo?.likes?.includes(currentUser?._id) ? <ThumbUp style={{ marginRight: "5px" }} /> : <ThumbUpOutlined style={{ marginRight: "5px" }} />}{currentVideo?.likes?.length}
+                        </Button>
+                        <Button onClick={dislikeHandler}>
+                            {currentVideo?.dislikes?.includes(currentUser?._id) ? <ThumbDown style={{ marginRight: "5px" }} /> : <ThumbDownOutlined style={{ marginRight: "5px" }} />}Dislike
+                        </Button>
+                        <Button>
+                            <ReplyOutlined style={{ marginRight: "5px" }} />Share
+                        </Button>
+                        <Button>
+                            <AddTaskOutlined style={{ marginRight: "5px" }} />Save
+                        </Button>
                     </Buttons>
                 </Details>
                 <Hr />
@@ -159,7 +185,9 @@ export default function Video() {
                             <VideoDescription>{currentVideo?.description}</VideoDescription>
                         </ChannelDetails>
                     </ChannelInfo>
-                    <Subscribe>Subscribe</Subscribe>
+                    <Subscribe onClick={subscribeHandler}>
+                        {currentUser?.subscribedUsers?.includes(channel?._id) ? "Unsubscribe" : "Subscribe"}
+                    </Subscribe>
                 </Channel>
                 <Hr />
                 <Comments />
