@@ -1,4 +1,7 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { styled } from "styled-components"
+import { format } from "timeago.js"
 
 const Container = styled.div`
     display: flex;
@@ -29,13 +32,26 @@ const Text = styled.p`
     font-size: 14px;
 `
 
-export default function Comment() {
+export default function Comment({ comment }) {
+
+    const [channel, setChannel] = useState({});
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const res = await axios.get(`/user/find/${comment?.userId}`)
+            // console.log(res?.data?.data)
+            setChannel(res?.data?.data)
+        }
+        fetchUsers()
+    }, [comment?.userId])
+
+
     return (
         <Container>
-            <Avatar src="https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png" />
+            <Avatar src={channel?.profilePicture ? channel?.profilePicture : "https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png"} />
             <Details>
-                <Name>Rizwan <Date>20 oct 2023</Date></Name>
-                <Text>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos modi iusto voluptatem doloribus veniam adipisci, consequuntur vero omnis ullam, pariatur nobis perferendis maiores accusamus alias quisquam dolore excepturi at ipsa?</Text>
+                <Name>{channel?.userName} <Date>{format(comment?.createdAt)}</Date></Name>
+                <Text>{comment?.description}</Text>
             </Details>
         </Container>
     )

@@ -107,6 +107,12 @@ const Subscribe = styled.button`
     cursor: pointer;
 `
 
+const VideoFrame = styled.video`
+    max-height: 720px;
+    width: 100%;
+    object-fit: cover;
+`
+
 export default function Video() {
     const dispatch = useDispatch()
     const { currentUser } = useSelector(state => state.user)
@@ -155,7 +161,7 @@ export default function Video() {
         <Container>
             <Content>
                 <VideoWrapper>
-                    <iframe width="100%" height="480" src="https://www.youtube.com/embed/yIaXoop8gl4" title="React Video Sharing App UI Design | Youtube UI Clone with React" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <VideoFrame src={currentVideo?.videoUrl} />
                 </VideoWrapper>
                 <Title>{currentVideo?.title}</Title>
                 <Details>
@@ -190,7 +196,7 @@ export default function Video() {
                     </Subscribe>
                 </Channel>
                 <Hr />
-                <Comments />
+                <Comments videoId={currentVideo?._id}/>
             </Content>
             {/* <Recommendations>
                 <Cards type="sm" />
