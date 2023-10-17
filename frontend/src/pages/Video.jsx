@@ -10,6 +10,7 @@ import axios from "axios"
 import { fetchStart, fetchSuccess, like, dislike, fetchFailure } from "../Redux/videoSlice"
 import { format } from "timeago.js"
 import { subscription } from "../Redux/userSlice"
+import Recommendation from "../Components/Recommendation"
 
 const Container = styled.div`
     display: flex;
@@ -57,10 +58,6 @@ const Button = styled.div`
 const Hr = styled.hr`
     border: 0.5px solid ${({ theme }) => theme.soft};
     margin: 10px 0px;
-`
-
-const Recommendations = styled.div`
-    flex: 2; 
 `
 
 const Channel = styled.div`
@@ -161,7 +158,7 @@ export default function Video() {
         <Container>
             <Content>
                 <VideoWrapper>
-                    <VideoFrame src={currentVideo?.videoUrl} controls/>
+                    <VideoFrame src={currentVideo?.videoUrl} controls />
                 </VideoWrapper>
                 <Title>{currentVideo?.title}</Title>
                 <Details>
@@ -196,22 +193,9 @@ export default function Video() {
                     </Subscribe>
                 </Channel>
                 <Hr />
-                <Comments videoId={currentVideo?._id}/>
+                <Comments videoId={currentVideo?._id} />
             </Content>
-            {/* <Recommendations>
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-                <Cards type="sm" />
-            </Recommendations> */}
+            <Recommendation tags={currentVideo?.tags} />
         </Container>
     )
 }

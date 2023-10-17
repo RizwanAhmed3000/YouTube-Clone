@@ -189,7 +189,7 @@ export const getByTags = async (req, res) => {
 }
 
 export const getBySearch = async (req, res) => {
-    const search = req.query.s
+    const search = req.query.search
     try {
         const videos = await Video.find({ title: { $regex: search, $options: "i" } }).limit(40)
         res.status(200).send({

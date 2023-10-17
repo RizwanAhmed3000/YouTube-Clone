@@ -1,5 +1,5 @@
 import { AccountCircleOutlined, SearchOutlined, VideoCallOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components"
 import { useSelector } from "react-redux"
 import { Avatar } from "@mui/material";
@@ -64,14 +64,16 @@ export default function Navbar() {
     const { currentUser } = useSelector(state => state.user)
     // console.log(currentUser, "====>>  current user from redux");
     const [uploadVideoPopup, setUploadVideoPopup] = useState(false);
+    const [search, setSearch] = useState('');
+    const navigate = useNavigate();
 
     return (
         <>
             <Container>
                 <Wrapper>
                     <Search>
-                        <Input placeholder="Search" />
-                        <SearchOutlined style={{ cursor: "pointer" }} />
+                        <Input placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
+                        <SearchOutlined style={{ cursor: "pointer" }} onClick={() => navigate(`/search?search=${search}`)} />
                     </Search>
                     {
                         currentUser ?

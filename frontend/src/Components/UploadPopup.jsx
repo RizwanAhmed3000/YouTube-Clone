@@ -5,6 +5,10 @@ import { styled } from 'styled-components';
 import { app, storage, ref, uploadBytesResumable, getDownloadURL } from '../firebaseConfig/Config.js';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 const Container = styled.div`
     width: 100%;
@@ -16,6 +20,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 999;
 `;
 
 const Wrapper = styled.div`
@@ -145,7 +150,7 @@ export default function UploadPopup({ setUploadVideoPopup }) {
                 </Title>
                 <Label>Video:</Label>
                 {
-                    videoPerc > 0 ? (`Uploading: ${videoPerc}%`) : (<Input type="file" accept='video/*' onChange={(e) => setVideo(e.target.files[0])} />)
+                    videoPerc > 0 ? (<LinearProgressWithLabel value={videoPerc} />) : (<Input type="file" accept='video/*' onChange={(e) => setVideo(e.target.files[0])} />)
 
                 }
                 <Input type="text" placeholder='Title' name='title' onChange={handleChange} />
@@ -153,10 +158,52 @@ export default function UploadPopup({ setUploadVideoPopup }) {
                 <Input type="text" placeholder='Separate tags with a comma.' onChange={tagsHandler} />
                 <Label>Thumbnail:</Label>
                 {
-                    imagePerc > 0 ? (`Uploading: ${imagePerc}%`) : (<Input type="file" accept='image/*' onChange={(e) => setImage(e.target.files[0])} />)
+                    imagePerc > 0 ? (<LinearProgressWithLabel value={imagePerc} />) : (<Input type="file" accept='image/*' onChange={(e) => setImage(e.target.files[0])} />)
                 }
                 <Button onClick={uploadHandler}>Upload</Button>
             </Wrapper>
         </Container>
     )
+}
+
+function LinearProgressWithLabel(props) {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography variant="body2" style={{ color: `${({ theme }) => theme.text}` }}>{`${Math.round(
+                    props.value,
+                )}%`}</Typography>
+            </Box>
+        </Box>
+    );
+}
+
+LinearProgressWithLabel.propTypes = {
+    /**
+     * The value of the progress indicator for the determinate and buffer variants.
+     * Value between 0 and 100.
+     */
+    value: PropTypes.number.isRequired,
+};
+
+function LinearWithValueLabel() {
+    const [progress, setProgress] = useState(10);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+        }, 800);
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    return (
+        <Box sx={{ width: '100%' }}>
+            <LinearProgressWithLabel value={progress} />
+        </Box>
+    );
 }

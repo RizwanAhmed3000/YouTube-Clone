@@ -74,7 +74,7 @@ export default function SignIn() {
             dispatch(loginStart());
             try {
                 const res = await axios.post(`/auth/signin`, { email, password })
-                console.log(res.data, "==> sign in api hit");
+                // console.log(res.data, "==> sign in api hit");
                 dispatch(loginSuccess(res.data.data))
                 navigate('/')
             } catch (error) {

@@ -7,6 +7,7 @@ import Video from "./pages/Video";
 import { darkTheme, lightTheme } from "./utils/Theme";
 import { Route, BrowserRouter, Routes, redirect } from "react-router-dom";
 import SignIn from "./pages/SignIn";
+import Search from "./pages/Search";
 
 const Container = styled.div`
   display: flex;
@@ -46,8 +47,9 @@ function App() {
               <Routes>
                 <Route path="/">
                   <Route index element={<Home type="random" />} />
-                  <Route path="/trends" element={<Home type="trend"/>} />
+                  <Route path="/trends" element={<Home type="trend" />} />
                   <Route path="/subscriptions" element={<Home type="subscriber" />} />
+                  <Route path="/search" element={<Search />} />
                   <Route path="/signin" element={<SignIn />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
